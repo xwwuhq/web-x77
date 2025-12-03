@@ -2,14 +2,68 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Mon Site</title>
+    <title>Recherche</title>
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding-top: 50px;
+        }
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+    </style>
 </head>
-<body style="display:flex; justify-content:center; align-items:center; height:100vh; background:#111;">
+<body>
 
-    <button onclick="alert('Salut !')" 
-            style="padding:15px 30px; font-size:20px; border:none; border-radius:10px; background:#4CAF50; color:white; cursor:pointer;">
-        Clique ici
-    </button>
+    <h1>Système de Recherche</h1>
+
+    <input id="searchInput" type="text" placeholder="Tape un nom...">
+    <button onclick="rechercher()">Rechercher</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function rechercher() {
+            const nomRecherche = document.getElementById("searchInput").value.toLowerCase();
+            const resultDiv = document.getElementById("result");
+
+            // Charger le fichier JSON
+            const response = await fetch("data.json");
+            const data = await response.json();
+
+            // Chercher la personne
+            const resultat = data.find(item => item.nom.toLowerCase() === nomRecherche);
+
+            if (resultat) {
+                resultDiv.innerHTML = `
+                    <p><strong>Nom :</strong> ${resultat.nom}</p>
+                    <p><strong>Email :</strong> ${resultat.email}</p>
+                    <p><strong>Age :</strong> ${resultat.age}</p>
+                `;
+            } else {
+                resultDiv.innerHTML = "<p>Aucun résultat trouvé.</p>";
+            }
+        }
+    </script>
 
 </body>
 </html>
